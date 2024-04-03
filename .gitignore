@@ -1,0 +1,8 @@
+.idea
+setup_env_vars.sh
+node_modules
+
+server.cert
+server.key
+
+install-ubuntu.sh

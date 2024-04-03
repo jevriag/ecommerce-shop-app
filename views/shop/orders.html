@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="/css/orders.css">
+{% endblock %}
+
+{% block content %}
+
+    {% if (orders.length <= 0) %}
+        <h1>Nothing there!</h1>
+    {% else %}
+        <ul class="orders">
+            {% for order in orders %}
+            <li class="orders__item">
+                <h1>Order - # {{ order._id }} - <a href="/orders/{{ order._id }}">Invoice</a></h1>
+                <ul class="orders__products">
+                    {% for p in order.products %}
+                        <li class="orders__products-item">{{ p.product.title }} {{ p.quantity }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+

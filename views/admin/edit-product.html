@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+{% endblock %}
+
+{% block content %}
+    <main>
+        {% if errorMessage %}
+            <div class="user-message user-message--error">{{ errorMessage }}</div>
+        {% endif %}
+        <!--  enctype="multipart/form-data
+        content type telling the server that this request will not contain plaintext but
+        will contain mixed data, text and binary data and MULTER(THE THIRD PARTY PACKAGE)
+        which was installed will be looking for incoming requests with this type of data      -->
+        <form class="product-form"
+              action="/admin/{% if editing %}edit-product{% else %}add-product{% endif %}"
+              method="POST"
+              enctype="multipart/form-data"
+        >
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input
+                        type="text"
+                       name="title"
+                       id="title"
+                       value="{% if editing or hasError %}{{ product.title }}{% endif %}"
+                >
+
+            </div>
+
+           <!-- a file picker
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input
+                        type="text"
+                        name="imageUrl"
+                        id="imageUrl"
+                        value="{% if editing or hasError %}{{ product.imageUrl }}{% endif %}"
+                >
+            </div> -->
+            <div class="form-control">
+                <label for="image">Image</label>
+                <input
+                        type="file"
+                        name="image"
+                        id="image"
+                >
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input
+                        type="number"
+                        name="price"
+                        id="price" step="0.01"
+                        value="{% if editing or hasError %}{{ product.price }}{% endif %}"
+                >
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea
+                        name="description"
+                        rows="5" id='description'
+                >
+                    {% if editing or hasError %}{{ product.description }}{% endif %}
+                </textarea>
+            </div>
+            {% if editing %}
+                <input type="hidden" value="{{ product._id }}" name="productId">
+            {% endif %}
+
+            <button
+                    class="btn"
+                    type="submit">
+                    {% if editing %}
+                        Update Product
+                    {% else %}
+                        Add Product
+                    {% endif %}
+            </button>
+        </form>
+    </main>
+{% endblock %}
